@@ -1,0 +1,23 @@
+{
+	"name": "ml-notifier",
+	"version": "1.0.0",
+	"description": "tiny script to get notified when a new product is published in MercadoLibre's site",
+	"main": "ml-notifier.js",
+	"url" : "https://github.com/pablomatiasgomez/ml-notifier",
+	"email" : "pablomatiasgomez@gmail.com",
+	
+	"repository": {
+		"type" : "git",
+		"url" : "https://github.com/pablomatiasgomez/ml-notifier"
+	},
+
+	"author": {
+		"name": "Pablo Matias Gomez",
+		"email": "pablomatiasgomez@gmail.com",
+		"url": "http://pablomatiasgomez.com.ar"
+	},
+
+	"dependencies": {
+  		"dateformat": "1.0.12"
+	}
+}
