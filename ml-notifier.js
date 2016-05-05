@@ -72,7 +72,7 @@ var getItems = function(offset) {
 			}
 		}
 	});
-}
+};
 
 function saveItems(items) {
 	fs.writeFileSync(itemsFile, JSON.stringify(items));
