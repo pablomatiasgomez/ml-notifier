@@ -1,13 +1,25 @@
 #!/usr/bin/env node
 
 Array.prototype.diff = function(a) {
-    return this.filter(function(i) {return a.indexOf(i) < 0;});
+	return this.filter(function(i) {return a.indexOf(i) < 0;});
 };
 
 var request = require('request');
 var fs = require('fs');
 var dateFormat = require('dateformat');
 var exec = require('child_process').exec;
+var nodemailer = require('nodemailer');
+
+// create reusable transporter object using the default SMTP transport
+var transporter = nodemailer.createTransport('smtps://gomez.pablo1%40gmail.com:XXXXXXXXXX@smtp.gmail.com');
+var mailOptions = {
+	from: '"Pablo Matias Gomez" <gomez.pablo1@gmail.com>', // sender address
+	to: 'pablomatiasgomez@gmail.com', // list of receivers
+	subject: '', // Subject line
+	text: 'Hello world', // plaintext body
+	html: '' // html body
+};
+
 
 
 var SEARCH_URL = "https://api.mercadolibre.com/sites/MLA/search";
@@ -30,7 +42,7 @@ function getUrl(filters) {
 	return url;
 }
 
-console.log("********** STARTING PROCESS (" + getCurrDate() + ") **********");
+mailOptions.html += "********** STARTING PROCESS (" + getCurrDate() + ") **********<br>";
 
 var filters = JSON.parse(fs.readFileSync(filtersFile, 'utf8'));
 var oldItems = JSON.parse(fs.readFileSync(itemsFile, 'utf8'));
@@ -52,24 +64,32 @@ var getItems = function(offset) {
 			
 			if (offset >= total) {
 				// finished
-				console.log("********** PROCESSING NEW ITEMS (" + getCurrDate() + ") **********");
+				mailOptions.html += "********** PROCESSING NEW ITEMS (" + getCurrDate() + ") **********<br>";
 				items = items.map(function(item) {
 					return item.permalink;
 				});
 				saveItems(items);
 				
 				var diff = items.diff(oldItems);
+				diff.forEach(function(item) {
+					mailOptions.html += item + "<br>";
+				});
+
+				mailOptions.html += "********** FINISHED PROCESS (" + getCurrDate() + ") **********<br><br>";
+
+				console.log(mailOptions.html);
 				if (diff.length) {
-					exec('notify-send "' + diff.length + ' new items found for ' + filtersFile + '"');
-					diff.forEach(function(item) {
-						console.log(item);
+					mailOptions.subject = diff.length + ' new items found for ' + itemName + " - " + getCurrDate();
+					transporter.sendMail(mailOptions, function(error, info){
+						if (error) return console.log(error);
+						console.log('Message sent: ' + info.response);
 					});
 				}
-
-				console.log("********** FINISHED PROCESS (" + getCurrDate() + ") **********\n\n");
 			} else {
 				getItems(offset);
 			}
+		} else {
+			console.log(error);
 		}
 	});
 };

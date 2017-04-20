@@ -18,6 +18,7 @@
 	},
 
 	"dependencies": {
-  		"dateformat": "1.0.12"
+  		"dateformat": "1.0.12",
+  		"nodemailer": "2.x"
 	}
 }
