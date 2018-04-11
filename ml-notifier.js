@@ -10,8 +10,13 @@ var dateFormat = require('dateformat');
 var exec = require('child_process').exec;
 var nodemailer = require('nodemailer');
 
+
+const PWD_FILE = __dirname + '/pwd';
+let getEmailPassword = () => fs.readFileSync(PWD_FILE, 'utf8').trim();
+
+
 // create reusable transporter object using the default SMTP transport
-var transporter = nodemailer.createTransport('smtps://gomez.pablo1%40gmail.com:XXXXXXXXXX@smtp.gmail.com');
+var transporter = nodemailer.createTransport(`smtps://gomez.pablo1%40gmail.com:${getEmailPassword()}@smtp.gmail.com`);
 var mailOptions = {
 	from: '"Pablo Matias Gomez" <gomez.pablo1@gmail.com>', // sender address
 	to: 'pablomatiasgomez@gmail.com', // list of receivers
