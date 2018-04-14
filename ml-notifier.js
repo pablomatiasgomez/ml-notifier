@@ -7,7 +7,6 @@ Array.prototype.diff = function(a) {
 var request = require('request');
 var fs = require('fs');
 var dateFormat = require('dateformat');
-var exec = require('child_process').exec;
 var nodemailer = require('nodemailer');
 
 
@@ -70,21 +69,25 @@ var getItems = function(offset) {
 			if (offset >= total) {
 				// finished
 				mailOptions.html += "********** PROCESSING NEW ITEMS (" + getCurrDate() + ") **********<br>";
-				items = items.map(function(item) {
-					return item.permalink;
+
+				var linksById = { };
+				items.forEach(function(item) {
+					linksById[item.id] = item.permalink;
 				});
-				saveItems(items);
+				var itemIds = Object.keys(linksById);
+
+				saveItems(itemIds);
 				
-				var diff = items.diff(oldItems);
-				diff.forEach(function(item) {
-					mailOptions.html += item + "<br>";
+				var diff = itemIds.diff(oldItems);
+				diff.forEach(function(itemId) {
+					mailOptions.html += linksById[itemId] + "<br>";
 				});
 
 				mailOptions.html += "********** FINISHED PROCESS (" + getCurrDate() + ") **********<br><br>";
 
 				console.log(mailOptions.html);
 				if (diff.length) {
-					mailOptions.subject = diff.length + ' new items found for ' + itemName + " - " + getCurrDate();
+					mailOptions.subject = diff.length + ' new products found for ' + itemName + " - " + getCurrDate();
 					transporter.sendMail(mailOptions, function(error, info){
 						if (error) return console.log(error);
 						console.log('Message sent: ' + info.response);
@@ -99,8 +102,8 @@ var getItems = function(offset) {
 	});
 };
 
-function saveItems(items) {
-	fs.writeFileSync(itemsFile, JSON.stringify(items));
+function saveItems(itemIds) {
+	fs.writeFileSync(itemsFile, JSON.stringify(itemIds));
 }
 
 function getCurrDate() {
