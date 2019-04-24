@@ -87,7 +87,7 @@ var getItems = function(offset) {
 
 				console.log(mailOptions.html);
 				if (diff.length) {
-					mailOptions.subject = diff.length + ' new products found for ' + itemName + " - " + getCurrDate();
+					mailOptions.subject = diff.length + ' new products (out of ' + itemIds.length + ') found for ' + itemName + " - " + getCurrDate();
 					transporter.sendMail(mailOptions, function(error, info){
 						if (error) return console.log(error);
 						console.log('Message sent: ' + info.response);
