@@ -6,7 +6,6 @@ Array.prototype.diff = function(a) {
 
 var request = require('request');
 var fs = require('fs');
-var dateFormat = require('dateformat');
 var nodemailer = require('nodemailer');
 
 
@@ -46,7 +45,7 @@ function getUrl(filters) {
 	return url;
 }
 
-mailOptions.html += "********** STARTING PROCESS (" + getCurrDate() + ") **********<br>";
+mailOptions.html += "********** STARTING PROCESS (" + new Date().toISOString() + ") **********<br>";
 
 var filters = JSON.parse(fs.readFileSync(filtersFile, 'utf8'));
 var oldItems = JSON.parse(fs.readFileSync(itemsFile, 'utf8'));
@@ -68,7 +67,7 @@ var getItems = function(offset) {
 			
 			if (offset >= total) {
 				// finished
-				mailOptions.html += "********** PROCESSING NEW ITEMS (" + getCurrDate() + ") **********<br>";
+				mailOptions.html += "********** PROCESSING NEW ITEMS (" + new Date().toISOString() + ") **********<br>";
 
 				var linksById = { };
 				items.forEach(function(item) {
@@ -83,11 +82,11 @@ var getItems = function(offset) {
 					mailOptions.html += linksById[itemId] + "<br>";
 				});
 
-				mailOptions.html += "********** FINISHED PROCESS (" + getCurrDate() + ") **********<br><br>";
+				mailOptions.html += "********** FINISHED PROCESS (" + new Date().toISOString() + ") **********<br><br>";
 
 				console.log(mailOptions.html);
 				if (diff.length) {
-					mailOptions.subject = diff.length + ' new products (out of ' + itemIds.length + ') found for ' + itemName + " - " + getCurrDate();
+					mailOptions.subject = diff.length + ' new products (out of ' + itemIds.length + ') found for ' + itemName + " - " + new Date().toISOString();
 					transporter.sendMail(mailOptions, function(error, info){
 						if (error) return console.log(error);
 						console.log('Message sent: ' + info.response);
@@ -104,10 +103,6 @@ var getItems = function(offset) {
 
 function saveItems(itemIds) {
 	fs.writeFileSync(itemsFile, JSON.stringify(itemIds));
-}
-
-function getCurrDate() {
-	return dateFormat(new Date(), "dd/mm/yyyy HH:MM:ss TT");
 }
 
 function createFileIfNotExists(filePath, content) {
