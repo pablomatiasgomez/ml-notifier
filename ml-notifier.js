@@ -13,7 +13,6 @@ var nodemailer = require('nodemailer');
 const PWD_FILE = __dirname + '/pwd';
 let getEmailPassword = () => fs.readFileSync(PWD_FILE, 'utf8').trim();
 
-
 // create reusable transporter object using the default SMTP transport
 var transporter = nodemailer.createTransport(`smtps://gomez.pablo1%40gmail.com:${getEmailPassword()}@smtp.gmail.com`);
 var mailOptions = {
@@ -25,7 +24,6 @@ var mailOptions = {
 };
 
 
-
 var SEARCH_URL = "https://api.mercadolibre.com/sites/MLA/search";
 
 var itemName = process.argv[2];
@@ -33,8 +31,10 @@ if (!itemName) {
 	console.log("Missing item name param");
 	return;
 }
+
 var filtersFile = __dirname + "/filters/" + itemName + "-filters.json";
 var itemsFile = __dirname + "/filters/" + itemName + "-items.json";
+createFileIfNotExists(itemsFile, "[]");
 
 function getUrl(filters) {
 	var url = SEARCH_URL + "?";
@@ -109,5 +109,16 @@ function saveItems(itemIds) {
 function getCurrDate() {
 	return dateFormat(new Date(), "dd/mm/yyyy HH:MM:ss TT");
 }
+
+function createFileIfNotExists(filePath, content) {
+	try {
+		fs.writeFileSync(filePath, content, { flag: 'wx' });
+	} catch (e) {
+		// Ignore if already exists.
+		if (e.code !== 'EEXIST') {
+			throw e;
+		}
+	}
+};
 
 getItems(0);
