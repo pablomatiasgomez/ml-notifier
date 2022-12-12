@@ -15,7 +15,7 @@
 		"url": "http://pablomatiasgomez.com.ar"
 	},
 	"dependencies": {
-		"nodemailer": "^6.4.6",
+		"nodemailer": "^6.6.1",
 		"request": "^2.88.2"
 	}
 }
