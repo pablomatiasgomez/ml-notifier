@@ -29,7 +29,7 @@ class MercadoLibreAPI {
 
             if (filters.offset < total) {
                 // Continue with next page
-                return Utils.delay(500).then(() => this.fetchItems(filters, items));
+                return Promise.resolve().then(Utils.delay(500)).then(() => this.fetchItems(filters, items));
             }
 
             // Otherwise, finished fetching items:
