@@ -1,6 +1,6 @@
 {
   "name": "ml-notifier",
-  "version": "1.0.0",
+  "version": "2.0.0",
   "description": "Tiny script to get notified when a new product is published in MercadoLibre's site",
   "main": "main.js",
   "license": "UNLICENSED",
