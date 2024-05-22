@@ -1,6 +1,11 @@
-.DS_Store
 node_modules
 npm-debug.log
 
-pwd
+logs/
+exports/
+.DS_Store
+.idea
+.nyc_output/
+
+config.json
 filters/*items.json
