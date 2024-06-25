@@ -17,7 +17,7 @@
     "url": "https://www.pablomatiasgomez.com.ar"
   },
   "dependencies": {
-    "telegram-bot-api": "^2.0.1"
+    "node-telegram-bot-api": "^0.66.0"
   },
   "bugs": {
     "url": "https://github.com/pablomatiasgomez/ml-notifier/issues"

@@ -1,7 +1,6 @@
 'use strict';
 
-// TODO: migrate to "node-telegram-bot-api" once that dependency stops using "request"..
-const TelegramBot = require('telegram-bot-api');
+const TelegramBot = require('node-telegram-bot-api');
 
 const Utils = require('./utils.js');
 
@@ -11,9 +10,7 @@ const TELEGRAM_MESSAGE_BYTES_LIMIT = 4096;
 
 class NotifierService {
     constructor() {
-        this.telegramBot = new TelegramBot({
-            token: config.telegram.token
-        });
+        this.telegramBot = new TelegramBot(config.telegram.token);
         this.chatId = config.telegram.chatId;
     }
 
@@ -21,11 +18,7 @@ class NotifierService {
         let promise = Promise.resolve();
         this.splitMessage(message).forEach(message => {
             promise = promise.then(() => {
-                return this.telegramBot.sendMessage({
-                    chat_id: this.chatId,
-                    text: message,
-                    parse_mode: 'HTML',
-                }).catch(e => {
+                return this.telegramBot.sendMessage(this.chatId, message, {parse_mode: 'HTML'}).catch(e => {
                     console.error("Error while notifying to telegram.. ", e);
                 });
             }).then(Utils.delay(200));
