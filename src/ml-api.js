@@ -16,7 +16,8 @@ class MercadoLibreAPI {
 		if (!filters.offset) filters.offset = 0;
 		console.log(`Fetching items for page offset ${filters.offset}. Current items size: ${items.length}`)
 
-		return fetch(this.getUrl(filters)).then(response => {
+		const url = SEARCH_URL + "?" + new URLSearchParams(filters).toString();
+		return fetch(url).then(response => {
 			if (response.status !== 200) throw new Error(`Error while getting items: ${response.status}`);
 			return response.json();
 		}).then(body => {
@@ -36,17 +37,6 @@ class MercadoLibreAPI {
 			return items;
 		});
 	}
-
-	getUrl(filters) {
-		let url = SEARCH_URL + "?";
-		for (let key in filters) {
-			if (filters.hasOwnProperty(key)) {
-				url += key + "=" + encodeURIComponent(filters[key]) + "&";
-			}
-		}
-		return url;
-	}
-
 
 }
 
