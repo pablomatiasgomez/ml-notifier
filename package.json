@@ -16,9 +16,7 @@
     "email": "pablomatiasgomez@gmail.com",
     "url": "https://www.pablomatiasgomez.com.ar"
   },
-  "dependencies": {
-    "telegram-bot-api": "^2.0.1"
-  },
+  "dependencies": {},
   "bugs": {
     "url": "https://github.com/pablomatiasgomez/ml-notifier/issues"
   },
