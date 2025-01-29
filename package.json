@@ -19,6 +19,9 @@
   "dependencies": {
     "node-telegram-bot-api": "^0.66.0"
   },
+  "overrides": {
+    "tough-cookie": "4.1.4"
+  },
   "bugs": {
     "url": "https://github.com/pablomatiasgomez/ml-notifier/issues"
   },
