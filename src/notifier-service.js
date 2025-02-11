@@ -5,7 +5,7 @@ const Utils = require('./utils.js');
 //----------------------
 
 const TELEGRAM_MESSAGE_BYTES_LIMIT = 4096;
-const TELEGRAM_BASE_URL = 'https://api.telegram.org'
+const TELEGRAM_BASE_URL = 'https://api.telegram.org';
 
 class NotifierService {
 	constructor() {
